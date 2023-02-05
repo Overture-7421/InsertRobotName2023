@@ -26,7 +26,8 @@ RobotContainer::RobotContainer() {
 }
 
 void RobotContainer::ConfigureBindings() {
-    resetNavx.OnTrue( frc2::InstantCommand{ [this]() {this->visionManager.toggleOdometry();} }.ToPtr() );
+    resetNavx.OnTrue( frc2::InstantCommand{ [this]() {this->swerveChassis.resetNavx();} }.ToPtr() );
+    createTrajectory.WhileTrue( frc2::InstantCommand( [this]() {this->visionManager.calculateTrajectory( "Center" );} ).ToPtr() );
     alignCenter.WhileTrue( visionManager.alignRobotToTarget().ToPtr() );
     alignRight.WhileTrue( visionManager.alignRobotToTarget().ToPtr() );
     alignLeft.WhileTrue( visionManager.alignRobotToTarget().ToPtr() );

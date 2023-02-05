@@ -50,6 +50,12 @@ void VisionManager::calculateTrajectory( std::string position ) {
     // Create PathPoints
     frc::Pose2d chassisPose = chassis->getOdometry();
     frc::Pose2d visionPose = calculateAlignPose( positionMap[position] );
+
+    if (visionPose == chassisPose) {
+        trajectory = pathplanner::PathPlannerTrajectory();
+        return;
+    }
+
     std::vector<pathplanner::PathPoint> pathPoints = {
         { chassisPose.Translation(), chassisPose.Rotation(), chassisPose.Rotation() },
         { visionPose.Translation(), visionPose.Rotation(), visionPose.Rotation() }
@@ -63,7 +69,7 @@ void VisionManager::calculateTrajectory( std::string position ) {
 frc2::SequentialCommandGroup VisionManager::alignRobotToTarget() {
 
     return frc2::SequentialCommandGroup(
-        frc2::InstantCommand( [this]() {return calculateTrajectory( "Center" );} ),
+        frc2::InstantCommand( [this]() {return this->calculateTrajectory( "Center" );} ),
         pathplanner::PPSwerveControllerCommand(
             trajectory,
             [this]() { return chassis->getOdometry(); },
