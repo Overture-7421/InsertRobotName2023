@@ -16,6 +16,7 @@
 #include "Subsystems/SwerveChassis/SwerveChassis.h"
 #include "Subsystems/VisionManager/VisionManager.h"
 #include "Commands/Teleop/Drive/Drive.h"
+#include "Commands/Common/AlignRobotToTarget/AlignRobotToTarget.h"
 
 class RobotContainer {
 public:
@@ -29,10 +30,9 @@ public:
 private:
     void ConfigureBindings();
 
-    //Controllers
+    // Chassis driver controller and buttons
     frc::XboxController controller{ 0 };
-    frc2::Trigger resetNavx{ [this] {return controller.GetYButton();} };
-    frc2::Trigger createTrajectory{ [this] {return controller.GetBButton();} }; //Change Button for final robot
+    frc2::Trigger resetNavx{ [this] {return controller.GetStartButton();} };
     frc2::Trigger alignCenter{ [this] {return controller.GetAButton();} }; //Change Button for final robot
     frc2::Trigger alignRight{ [this] {return controller.GetRightBumper();} }; //Change Button for final robot
     frc2::Trigger alignLeft{ [this] {return controller.GetLeftBumper();} }; //Change Button for final robot

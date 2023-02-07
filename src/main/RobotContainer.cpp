@@ -10,6 +10,7 @@ RobotContainer::RobotContainer() {
 
     //Set default commands
     swerveChassis.SetDefaultCommand( Drive( &swerveChassis, &controller ) );
+    visionManager.SetDefaultCommand( frc2::InstantCommand( [this]() {this->visionManager.updateOdometry();} ) );
 
     //Set choosers for auto
     pathChooser.SetDefaultOption( "OutOfCommunity&Balance", "OutOfCommunity&Balance" );
@@ -27,13 +28,14 @@ RobotContainer::RobotContainer() {
 
 void RobotContainer::ConfigureBindings() {
     resetNavx.OnTrue( frc2::InstantCommand{ [this]() {this->swerveChassis.resetNavx();} }.ToPtr() );
-    createTrajectory.WhileTrue( frc2::InstantCommand( [this]() {this->visionManager.calculateTrajectory( "Center" );} ).ToPtr() );
-    alignCenter.WhileTrue( visionManager.alignRobotToTarget().ToPtr() );
-    alignRight.WhileTrue( visionManager.alignRobotToTarget().ToPtr() );
-    alignLeft.WhileTrue( visionManager.alignRobotToTarget().ToPtr() );
+    alignCenter.WhileTrue( AlignRobotToTarget( &swerveChassis, &visionManager, "Center" ).ToPtr() );
+    alignRight.WhileTrue( AlignRobotToTarget( &swerveChassis, &visionManager, "Right" ).ToPtr() );
+    alignLeft.WhileTrue( AlignRobotToTarget( &swerveChassis, &visionManager, "Left" ).ToPtr() );
 }
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
+    // Set alliance color for pose estimation and correct on the fly path generation
+    visionManager.setAllianceColor();
     return CreateAuto( pathChooser.GetSelected() );
 }
 
