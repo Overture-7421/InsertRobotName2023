@@ -17,6 +17,7 @@
 #include "Subsystems/VisionManager/VisionManager.h"
 #include "Commands/Teleop/Drive/Drive.h"
 #include "Commands/Common/AlignRobotToTarget/AlignRobotToTarget.h"
+#include "Commands/Common/UpdateVisionOdometry/UpdateVisionOdometry.h"
 
 class RobotContainer {
 public:

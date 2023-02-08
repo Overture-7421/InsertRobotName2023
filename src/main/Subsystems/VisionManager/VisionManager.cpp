@@ -24,14 +24,9 @@ void VisionManager::setAllianceColor() {
     };
 }
 
-std::optional<photonlib::EstimatedRobotPose> VisionManager::getEstimatedGlobalPose( const frc::Pose3d& prevEstimatedRobotPose ) {
-    poseEstimator->SetReferencePose( prevEstimatedRobotPose );
-    return poseEstimator->Update();
-}
-
 void VisionManager::updateOdometry() {
     /* Calculate pose using AprilTags */
-    std::optional<photonlib::EstimatedRobotPose>poseResult = getEstimatedGlobalPose( frc::Pose3d( swerveChassis->getOdometry() ) );
+    std::optional<photonlib::EstimatedRobotPose>poseResult = poseEstimator->Update();;
 
     if (poseResult) {
         swerveChassis->addVisionMeasurement( poseResult.value().estimatedPose.ToPose2d(), poseResult.value().timestamp );

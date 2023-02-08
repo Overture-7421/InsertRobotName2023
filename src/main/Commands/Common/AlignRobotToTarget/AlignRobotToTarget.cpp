@@ -42,26 +42,28 @@ void AlignRobotToTarget::Initialize() {
         trajectory,
         [this]() { return swerveChassis->getOdometry(); },
         swerveChassis->getKinematics(),
-        { 5,0,0 },
-        { 5,0,0 },
-        { 1,0,0 },
+        { 0,0,0 },
+        { 0,0,0 },
+        { 0,0,0 },
         [this]( auto speeds ) { swerveChassis->setModuleStates( speeds ); },
         { swerveChassis },
         false
     );
 
-    alignCommand->Schedule();
+    alignCommand->Initialize();
 }
 
 // Called repeatedly when this Command is scheduled to run
-void AlignRobotToTarget::Execute() {}
+void AlignRobotToTarget::Execute() {
+    alignCommand->Execute();
+}
 
 // Called once the command ends or is interrupted.
 void AlignRobotToTarget::End( bool interrupted ) {
-    alignCommand->Cancel();
+    alignCommand->End( interrupted );
 }
 
 // Returns true when the command should end.
 bool AlignRobotToTarget::IsFinished() {
-    return false;
+    return alignCommand->IsFinished();
 }

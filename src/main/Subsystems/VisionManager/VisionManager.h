@@ -20,7 +20,6 @@ public:
     VisionManager( SwerveChassis* chassis );
     void setAllianceColor();
     void updateOdometry();
-    std::optional<photonlib::EstimatedRobotPose> getEstimatedGlobalPose( const frc::Pose3d& prevEstimatedRobotPose );
     void Periodic() override;
 
     /* PhotonVision */

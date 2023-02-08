@@ -47,6 +47,7 @@ private:
     std::unordered_map<std::string, frc::Pose2d> positionMap{
       {"Center", {1.5_m,0_m,{180_deg}}},
       {"Right", {1_m,1_m,{180_deg}}},
-      {"Left", {1_m,-1_m,{180_deg}}}
+      {"Left", {1_m,-1_m,{180_deg}}},
+      {"Loading",{1_m,1_m,{180_deg}}}
     };
 };

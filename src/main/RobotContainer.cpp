@@ -8,9 +8,12 @@
 
 RobotContainer::RobotContainer() {
 
+    visionManager.setAllianceColor(); // Cambiar a getautonomous para competencia
+
+
     //Set default commands
     swerveChassis.SetDefaultCommand( Drive( &swerveChassis, &controller ) );
-    visionManager.SetDefaultCommand( frc2::InstantCommand( [this]() {this->visionManager.updateOdometry();} ) );
+    visionManager.SetDefaultCommand( UpdateVisionOdometry( &visionManager ) );
 
     //Set choosers for auto
     pathChooser.SetDefaultOption( "OutOfCommunity&Balance", "OutOfCommunity&Balance" );
@@ -35,7 +38,6 @@ void RobotContainer::ConfigureBindings() {
 
 frc2::CommandPtr RobotContainer::GetAutonomousCommand() {
     // Set alliance color for pose estimation and correct on the fly path generation
-    visionManager.setAllianceColor();
     return CreateAuto( pathChooser.GetSelected() );
 }
 
